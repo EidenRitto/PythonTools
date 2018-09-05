@@ -12,8 +12,7 @@ with open(
     for line in lines:
         try:
             enline = re.search('^(.+)=', line).group(0)
-            cnline = re.search('=(.+)', line).group(0)
-            cnline = cnline.replace('=', '')
+            cnline = re.search('=(.+)', line).groups()[0]
             koline = rt.translate(cnline, 'zh', 'kor')[0]['dst']
             nf.write(enline + koline + '\n')
         except Exception as e:
