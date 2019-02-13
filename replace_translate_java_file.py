@@ -38,33 +38,48 @@ def translate(text, f, t):
     return string['trans_result']
 
 
-rootdir = 'C:\\Users\\30371\\IdeaProjects\\lyg_card_system\\lygMakeCard\\src\\com\\bs\\myJPanel'
-listdir = os.listdir(rootdir)
-conf = open("Chinese.properties", 'w', encoding='UTF-8')
-listword = []
-for i in range(0, len(listdir)):
-    path = os.path.join(rootdir, listdir[i])
-    if os.path.isfile(path):
-        with open(path, 'r', encoding='UTF-8') as r:
-            rline = r.readlines()
-        with open(path, 'w', encoding='UTF-8') as w:
-            for line in rline:
-                try:
-                    oldword = re.search('"[\u4e00-\u9fa5]+\"', line).group(0)
-                except Exception as e:
-                    oldword = ''
-                if oldword != '':
-                    newword = translate(oldword, 'zh', 'en')[0]['dst']
-                    newword = newword.replace('.', '')
-                    newword = newword.replace(' ', '_')
-                    javaword = 'MyLanguageConfig.getInfo('+newword+')'
-                    w.write(line.replace(oldword, javaword))
-                    if oldword not in listword:
-                        listword.append(oldword)
-                        try:
-                            conf.write(eval(newword) + "=" + eval(oldword) + "\n")
-                        except Exception as e:
-                            print(e)
-                else:
-                    w.write(line)
-conf.close()
+def mkfile(rootdir, conf, listword):
+    listdir = os.listdir(rootdir)
+    for i in range(0, len(listdir)):
+        path = os.path.join(rootdir, listdir[i])
+        if os.path.isfile(path):
+            with open(path, 'r', encoding='UTF-8') as r:
+                rline = r.readlines()
+            with open(path, 'w', encoding='UTF-8') as w:
+                flag = True
+                for line in rline:
+                    if line.find("//") != -1 or line.find("<!--") != -1 or line.find("<%--") != -1:
+                        w.write(line)
+                        continue
+                    if line.find("<script>") != -1:
+                        flag = False
+                    if line.find("</script>") != -1:
+                        flag = True
+                    try:
+                        oldword = re.search('[\u4e00-\u9fa5]+', line).group(0)
+                    except Exception as e:
+                        oldword = ''
+                    if flag and oldword != '':
+                        newword = translate(oldword, 'zh', 'en')[0]['dst']
+                        newword = newword.replace('.', '')
+                        newword = newword.replace('\'', '')
+                        newword = newword.replace(' ', '_')
+                        javaword = '<spring:message code="'+newword+'"/>'
+                        w.write(line.replace(oldword, javaword))
+                        if newword not in listword:
+                            listword.append(newword)
+                            try:
+                                conf.write(newword + "=" + oldword + "\n")
+                            except Exception as e:
+                                print(e)
+                    else:
+                        w.write(line)
+        else:
+            mkfile(path, conf, listword)
+
+
+w_rootdir = 'C:\\Users\\30371\\IdeaProjects\\泛网科技\\inxedu_web\\src\\main\\webapp\\WEB-INF\\view\\vone\\web'
+w_conf = open("Chinese.properties", 'w', encoding='UTF-8')
+w_listword = []
+mkfile(w_rootdir, w_conf, w_listword)
+w_conf.close()

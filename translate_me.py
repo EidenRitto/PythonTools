@@ -17,4 +17,3 @@ with open(
             nf.write(enline + koline + '\n')
         except Exception as e:
             print(e)
-

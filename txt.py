@@ -7,11 +7,11 @@ import re
 session = HTMLSession()
 data = ''
 page = 1
-url_before = 'https://www.toptxtb.com/toptxt/76/76118/'
+url_prefix = 'https://www.toptxta.com/toptxt/76/76118/'
 url_mid = '8125422.html'
 while True:
 
-    url = url_before + url_mid
+    url = url_prefix + url_mid
     # results = session.get(url).html.find('body > div#wrapper > div#content > div > div.entry > p ')
 
     next_url = session.get(url).html.find('body > div#wp.wp > div#content > div.novel_head > div.novel_bottom > a')[2].links

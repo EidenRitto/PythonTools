@@ -16,6 +16,6 @@ def geturl(cpage,lpage):
     return download_links
 
 
-link_list = geturl(121, 121)
+link_list = geturl(2, 2)
 for j in link_list:
     print(j)
