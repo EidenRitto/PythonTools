@@ -6,6 +6,7 @@ from urllib import parse
 import random
 
 
+# springMVC多国语言替换脚本
 def translate(text, f, t):
     appid = '20180904000202604'
     secretKey = 'kd5oAvzy683SfamH8CtY'

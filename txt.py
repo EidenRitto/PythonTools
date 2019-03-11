@@ -1,6 +1,7 @@
 from requests_html import HTMLSession
 import re
 
+# 小说下载
 # /79/79313/8381675.html 79/79100/8362760.html
 # /86/86996/8985228.html 9/9208/652276.html
 # 76/76118/8125422.html
