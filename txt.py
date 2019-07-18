@@ -5,11 +5,12 @@ import re
 # /79/79313/8381675.html 79/79100/8362760.html
 # /86/86996/8985228.html 9/9208/652276.html
 # 76/76118/8125422.html
+# 4/4642/234078.html
 session = HTMLSession()
 data = ''
 page = 1
-url_prefix = 'https://www.toptxta.com/toptxt/76/76118/'
-url_mid = '8125422.html'
+url_prefix = 'https://www.toptxta.com/toptxt/4/4642/'
+url_mid = '234078.html'
 while True:
 
     url = url_prefix + url_mid
@@ -19,7 +20,7 @@ while True:
     for key in next_url:
         url_mid = key
 
-    results = session.get(url).html.find('body > div#wp.wp > div#content > div#novel_content')
+    results = session.get(url).html.find('#novel_content')
     for result in results:
         # try:
         #     print(result.text)
@@ -33,6 +34,6 @@ while True:
     if url_mid == './':
         break
 
-# print("加载第"+str+"页数据中……请稍后")
-with open('白.txt', 'w', encoding='utf-8') as f:
+# print("加载第"+strA+"页数据中……请稍后")
+with open('FFF.txt', 'w', encoding='utf-8') as f:
     f.write(data)
